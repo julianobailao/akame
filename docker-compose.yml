@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  node:
+    image: node:6-alpine
+    command: npm install --prefix code
+    volumes:
+      - .:/code
+    ports:
+      - 8080:8080
+    working_dir: '/code'
+#    entrypoint: /bin/sh -c "while true; do sleep 5; done"
+
+  # NGINX
+  app:
+    image: nginx:stable-alpine
+    volumes:
+      - ./dist:/usr/share/nginx/html
+    ports:
+      - 80:80
+    links:
+      - node
